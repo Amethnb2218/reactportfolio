@@ -1,4 +1,4 @@
-export default function Projet({ project, onDelete, onSelect }) {
+export default function Projet({ project, onDelete, onSelect, isBusy = false }) {
   function handleSelect(event) {
     event.preventDefault();
     onSelect(project.id);
@@ -28,9 +28,10 @@ export default function Projet({ project, onDelete, onSelect }) {
         <button
           className="delete-button"
           type="button"
+          disabled={isBusy}
           onClick={() => onDelete(project.id)}
         >
-          Supprimer
+          {isBusy ? "Suppression..." : "Supprimer"}
         </button>
       </div>
     </article>

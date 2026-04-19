@@ -2,7 +2,12 @@ import { useEffect, useMemo, useState } from "react";
 import { initialProjects } from "../data/projects.js";
 import AjouterProjet from "./AjouterProjet.jsx";
 import Projet from "./Projet.jsx";
-import { createProject, fetchProjects } from "../services/projectsApi.js";
+import RechercheProjet from "./RechercheProjet.jsx";
+import {
+  createProject,
+  deleteProject,
+  fetchProjects
+} from "../services/projectsApi.js";
 
 function getNextProjectId(projects) {
   return projects.reduce((maxId, project) => Math.max(maxId, project.id), 0) + 1;
@@ -15,6 +20,7 @@ export default function Dossier() {
     initialProjects[0]?.id ?? null
   );
   const [status, setStatus] = useState("Chargement API");
+  const [pendingDeletionId, setPendingDeletionId] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -72,7 +78,7 @@ export default function Dossier() {
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) ?? null;
 
-  function handleDeleteProject(projectId) {
+  function removeProjectLocally(projectId) {
     setProjects((currentProjects) => {
       const updatedProjects = currentProjects.filter(
         (project) => project.id !== projectId
@@ -84,6 +90,21 @@ export default function Dossier() {
 
       return updatedProjects;
     });
+  }
+
+  async function handleDeleteProject(projectId) {
+    setPendingDeletionId(projectId);
+
+    try {
+      await deleteProject(projectId);
+      removeProjectLocally(projectId);
+      setStatus("Projet supprime sur le serveur");
+    } catch (error) {
+      removeProjectLocally(projectId);
+      setStatus("Suppression locale hors ligne");
+    } finally {
+      setPendingDeletionId(null);
+    }
   }
 
   async function handleAddProject(projectData) {
@@ -140,17 +161,12 @@ export default function Dossier() {
             <span className="status-badge">{status}</span>
           </div>
 
-          <div className="form-grid">
-            <label className="form-column-full">
-              <span>Rechercher un projet</span>
-              <input
-                type="search"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Libelle, categorie, technologie..."
-              />
-            </label>
-          </div>
+          <RechercheProjet
+            search={search}
+            onSearchChange={setSearch}
+            resultCount={filteredProjects.length}
+            totalCount={projects.length}
+          />
 
           <div className="project-flex" aria-live="polite">
             {filteredProjects.length > 0 ? (
@@ -160,6 +176,7 @@ export default function Dossier() {
                   project={project}
                   onDelete={handleDeleteProject}
                   onSelect={setSelectedProjectId}
+                  isBusy={pendingDeletionId === project.id}
                 />
               ))
             ) : (
