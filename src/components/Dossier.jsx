@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { initialProjects } from "../data/projects.js";
+import AjouterProjet from "./AjouterProjet.jsx";
 import Projet from "./Projet.jsx";
 
 function getNextProjectId(projects) {
@@ -51,20 +52,10 @@ export default function Dossier() {
     });
   }
 
-  function handleAddPlaceholderProject() {
+  function handleAddProject(projectData) {
     const newProject = {
-      id: getNextProjectId(projects),
-      libelle: "Nouveau projet a completer",
-      image:
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80",
-      categorie: "Prototype",
-      periode: "2026",
-      statut: "Brouillon",
-      role: "A renseigner",
-      lien: "",
-      technologies: ["React"],
-      description:
-        "Projet provisoire ajoute depuis le composant Dossier en attendant le formulaire dedie."
+      ...projectData,
+      id: getNextProjectId(projects)
     };
 
     setProjects((currentProjects) => [newProject, ...currentProjects]);
@@ -80,6 +71,19 @@ export default function Dossier() {
           Le composant Dossier centralise maintenant l&apos;etat des projets, la
           recherche locale et les actions de base.
         </p>
+      </div>
+
+      <div className="form-layout">
+        <AjouterProjet onAddProject={handleAddProject} />
+
+        <aside className="panel helper-panel">
+          <h3>Rappels rapides</h3>
+          <ul className="plain-list compact-list">
+            <li>Le libelle doit etre clair et actionnable.</li>
+            <li>Les technologies separentes par des virgules seront converties en tags.</li>
+            <li>Le projet ajoute est automatiquement selectionne.</li>
+          </ul>
+        </aside>
       </div>
 
       <div className="workspace-grid">
@@ -104,16 +108,6 @@ export default function Dossier() {
                 placeholder="Libelle, categorie, technologie..."
               />
             </label>
-          </div>
-
-          <div className="form-actions">
-            <button
-              className="button button-primary"
-              type="button"
-              onClick={handleAddPlaceholderProject}
-            >
-              Ajouter un projet temporaire
-            </button>
           </div>
 
           <div className="project-flex" aria-live="polite">
