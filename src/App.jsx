@@ -1,16 +1,26 @@
+import Footer from "./components/Footer.jsx";
+import HeroSection from "./components/HeroSection.jsx";
+import PortfolioIntroSection from "./components/PortfolioIntroSection.jsx";
+import ProfileSection from "./components/ProfileSection.jsx";
+import Topbar from "./components/Topbar.jsx";
+import ExperienceSection from "./components/ExperienceSection.jsx";
+
 export default function App() {
   return (
     <div className="page-shell">
-      <main className="section" aria-labelledby="app-title">
-        <section className="panel">
-          <p className="section-kicker">Refonte React</p>
-          <h1 id="app-title">Portfolio en cours de transformation</h1>
-          <p className="muted">
-            La structure SPA React est initialisée. Les composants métiers vont
-            maintenant remplacer l&apos;ancienne version HTML statique.
-          </p>
-        </section>
+      <a className="skip-link" href="#contenu-principal">
+        Aller au contenu principal
+      </a>
+      <header className="hero" id="accueil">
+        <Topbar />
+        <HeroSection />
+      </header>
+      <main id="contenu-principal">
+        <ProfileSection />
+        <ExperienceSection />
+        <PortfolioIntroSection />
       </main>
+      <Footer />
     </div>
   );
 }
