@@ -1,0 +1,59 @@
+{
+  "projets": [
+    {
+      "id": 1,
+      "libelle": "Jolofera - Plateforme SaaS Réservation & E-commerce",
+      "image": "https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1400&q=80",
+      "categorie": "SaaS",
+      "periode": "2024 - Présent",
+      "statut": "En production",
+      "role": "Fondateur & Développeur Full Stack",
+      "lien": "https://jolofera.com",
+      "technologies": [
+        "React 18",
+        "Vite",
+        "Node.js",
+        "Express.js",
+        "PostgreSQL",
+        "Prisma ORM",
+        "WebSocket"
+      ],
+      "description": "Plateforme SaaS multi-tenant de réservation et e-commerce pour salons et boutiques avec paiements multi-passerelles, notifications temps réel et gestion média."
+    },
+    {
+      "id": 2,
+      "libelle": "Pilotage Production B2B - Fibre & ADSL",
+      "image": "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80",
+      "categorie": "Télécoms",
+      "periode": "Nov. 2024 - Déc. 2025",
+      "statut": "Livré",
+      "role": "Pilote Production B2B",
+      "lien": "",
+      "technologies": [
+        "FTTH",
+        "FTTO",
+        "ADSL",
+        "GAIA",
+        "SONIS",
+        "Excel"
+      ],
+      "description": "Supervision des productions B2B fibre et ADSL, pilotage des équipes terrain, gestion des blocages et reporting quotidien des opérations."
+    },
+    {
+      "id": 3,
+      "libelle": "Déploiement Réseaux & Cybersécurité",
+      "image": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=80",
+      "categorie": "Infrastructure",
+      "periode": "Mai 2024 - Juin 2024",
+      "statut": "Terminé",
+      "role": "Stagiaire Réseaux & Cybersécurité",
+      "lien": "",
+      "technologies": [
+        "Caméras IP",
+        "Switches",
+        "Microsoft Exchange"
+      ],
+      "description": "Travaux de terrain et de configuration sur des équipements réseau, des caméras IP et un serveur de messagerie Microsoft Exchange."
+    }
+  ]
+}

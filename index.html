@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accueil | Mouhamed Sall</title>
+    <meta
+      name="description"
+      content="Portfolio professionnel de Mouhamed Sall, développeur Full Stack Junior à Dakar."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="js/app.js" defer></script>
+  </head>
+  <body data-page="home">
+    <a class="skip-link" href="#contenu-principal">Aller au contenu principal</a>
+
+    <div class="page-shell">
+      <header class="hero" id="accueil">
+        <nav class="topbar" aria-label="Navigation principale">
+          <div class="topbar-head">
+            <a class="brand" href="index.html">MS</a>
+            <button
+              class="menu-button"
+              id="menuButton"
+              type="button"
+              aria-expanded="false"
+              aria-controls="menuPrincipal"
+            >
+              <span>Menu</span>
+              <span class="menu-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="topbar-links" id="menuPrincipal">
+            <a class="nav-current" href="index.html">Accueil</a>
+            <a href="lister-projets.html">Lister les projets</a>
+            <a href="detailler-projet.html">Détailler un projet</a>
+            <a href="ajouter-projet.html">Ajouter un projet</a>
+          </div>
+        </nav>
+
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Portfolio professionnel</p>
+            <h1>Mouhamed Sall</h1>
+            <p class="hero-role">
+              Développeur Full Stack Junior | DevOps &amp; Cloud | Réseaux
+              &amp; Systèmes
+            </p>
+            <p class="hero-summary">
+              Étudiant ingénieur en Génie Logiciel à l'ESP Dakar, avec une
+              expérience opérationnelle chez Sonatel et un projet SaaS en
+              production dans l'univers de la réservation et du e-commerce.
+            </p>
+
+            <div class="hero-actions">
+              <a class="button button-primary" href="lister-projets.html"
+                >Voir les projets</a
+              >
+              <a
+                class="button button-ghost"
+                href="https://jolofera.com"
+                target="_blank"
+                rel="noreferrer noopener"
+                >Visiter Jolofera</a
+              >
+            </div>
+
+            <ul class="hero-metrics" aria-label="Points clés">
+              <li>
+                <strong id="compteurProjets">0</strong>
+                <span>projets</span>
+              </li>
+              <li>
+                <strong>Full Stack</strong>
+                <span>Web, API et produit</span>
+              </li>
+              <li>
+                <strong>Dakar</strong>
+                <span>Sénégal</span>
+              </li>
+            </ul>
+
+            <ul class="hero-links plain-list">
+              <li><a href="mailto:amethsl2218@gmail.com">amethsl2218@gmail.com</a></li>
+              <li><a href="tel:+221776762784">+221 77 676 27 84</a></li>
+              <li>
+                <a
+                  href="https://github.com/Amethnb2218"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  >github.com/Amethnb2218</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://linkedin.com/in/mouhamed-sall"
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  >linkedin.com/in/mouhamed-sall</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <aside class="hero-spotlight" aria-label="Portrait et repères professionnels">
+            <div class="spotlight-frame">
+              <figure class="portrait-card">
+                <img
+                  class="portrait-image"
+                  src="assets/images/mouhamed-sall.jpeg"
+                  alt="Portrait de Mouhamed Sall"
+                />
+                <figcaption>
+                  Mouhamed Sall, développeur Full Stack Junior basé à Dakar.
+                </figcaption>
+              </figure>
+              <div class="spotlight-card profile-aside">
+                <p class="spotlight-title">Repères professionnels</p>
+                <ul class="plain-list compact-list quick-facts">
+                  <li>Fondateur de Jolofera, plateforme SaaS de réservation et e-commerce.</li>
+                  <li>Expérience opérationnelle chez Sonatel sur les environnements B2B.</li>
+                  <li>Formation Cloud AWS en cours à l'Orange Digital Center.</li>
+                </ul>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </header>
+
+      <main id="contenu-principal">
+        <section class="section">
+          <div class="section-heading">
+            <p class="section-kicker">Profil</p>
+            <h2>Présentation</h2>
+            <p>Développeur Full Stack Junior, orienté produit, cloud et exécution terrain.</p>
+          </div>
+
+          <div class="profile-grid">
+            <article class="panel">
+              <h3>Coordonnées</h3>
+              <ul class="plain-list contact-list">
+                <li><strong>Email :</strong> <a href="mailto:amethsl2218@gmail.com">amethsl2218@gmail.com</a></li>
+                <li><strong>Téléphone :</strong> <a href="tel:+221776762784">+221 77 676 27 84</a></li>
+                <li><strong>Localisation :</strong> Dakar, Sénégal</li>
+                <li><strong>Site :</strong> <a href="https://jolofera.com" target="_blank" rel="noreferrer noopener">jolofera.com</a></li>
+              </ul>
+            </article>
+
+            <article class="panel">
+              <h3>Compétences clés</h3>
+              <div class="tag-cloud" id="competencesPrincipales">
+                <span>JavaScript</span>
+                <span>React 18</span>
+                <span>Node.js</span>
+                <span>Express.js</span>
+                <span>PostgreSQL</span>
+                <span>Prisma ORM</span>
+                <span>AWS</span>
+                <span>Linux</span>
+                <span>Réseaux</span>
+              </div>
+            </article>
+
+            <article class="panel">
+              <h3>Axes d'intervention</h3>
+              <ul class="plain-list compact-list">
+                <li>Applications web full stack et API REST</li>
+                <li>Outils métiers et workflows digitaux</li>
+                <li>Cloud, DevOps et automatisation</li>
+                <li>Environnements réseaux et supervision</li>
+              </ul>
+            </article>
+
+            <article class="panel panel-wide">
+              <h3>Résumé professionnel</h3>
+              <p id="resumeProfessionnel">
+                Développeur Full Stack Junior et étudiant ingénieur en Génie
+                Logiciel à l'ESP Dakar, avec une expérience opérationnelle chez
+                Sonatel en supervision de services B2B et gestion d'équipes
+                techniques en mode Agile. Fondateur de Jolofera, une plateforme
+                SaaS full stack de réservation et e-commerce pour salons et
+                boutiques. En formation Cloud AWS à l'Orange Digital Center,
+                autonome, orienté résultats et passionné par le développement
+                web, le cloud et les architectures distribuées.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="section-kicker">Sélection</p>
+            <h2>Projets mis en avant</h2>
+            <p>Quelques réalisations à consulter avant d'explorer la liste complète.</p>
+          </div>
+
+          <div class="project-flex" id="projetsVedette" aria-label="Projets mis en avant"></div>
+        </section>
+
+        <section class="section" id="parcours">
+          <div class="section-heading">
+            <p class="section-kicker">Parcours</p>
+            <h2>Expériences, formation et certifications</h2>
+            <p>Parcours académique, expérience terrain et montée en compétence continue.</p>
+          </div>
+
+          <div class="timeline-grid">
+            <article class="panel">
+              <h3>Expérience professionnelle</h3>
+              <div id="blocExperience"></div>
+            </article>
+
+            <article class="panel">
+              <h3>Formation</h3>
+              <div id="blocFormation"></div>
+            </article>
+
+            <article class="panel">
+              <h3>Certifications et langues</h3>
+              <div id="blocComplementaire"></div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>Portfolio de Mouhamed Sall</p>
+      </footer>
+    </div>
+  </body>
+</html>
