@@ -824,6 +824,12 @@ main {
   gap: 0.6rem;
 }
 
+.detail-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
 .selection-list {
   display: grid;
   gap: 0.8rem;

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { initialProjects } from "../data/projects.js";
 import AjouterProjet from "./AjouterProjet.jsx";
+import DetaillerProjet from "./DetaillerProjet.jsx";
 import Projet from "./Projet.jsx";
 import RechercheProjet from "./RechercheProjet.jsx";
 import {
@@ -189,44 +190,10 @@ export default function Dossier() {
 
         <aside className="panel project-detail-panel">
           <h3>Projet selectionne</h3>
-          {selectedProject ? (
-            <article className="project-detail">
-              <span className="detail-chip">{selectedProject.categorie}</span>
-              <h4>{selectedProject.libelle}</h4>
-              <p>{selectedProject.description}</p>
-              <img
-                src={selectedProject.image}
-                alt={`Illustration du projet ${selectedProject.libelle}`}
-              />
-              <dl className="detail-grid">
-                <div>
-                  <dt>Periode</dt>
-                  <dd>{selectedProject.periode}</dd>
-                </div>
-                <div>
-                  <dt>Statut</dt>
-                  <dd>{selectedProject.statut}</dd>
-                </div>
-                <div>
-                  <dt>Role</dt>
-                  <dd>{selectedProject.role}</dd>
-                </div>
-                <div>
-                  <dt>Lien</dt>
-                  <dd>{selectedProject.lien || "Non renseigne"}</dd>
-                </div>
-              </dl>
-              <div className="tech-list">
-                {selectedProject.technologies.map((technology) => (
-                  <span key={technology}>{technology}</span>
-                ))}
-              </div>
-            </article>
-          ) : (
-            <div className="project-detail-empty">
-              Selectionnez ou ajoutez un projet pour afficher son detail.
-            </div>
-          )}
+          <DetaillerProjet
+            project={selectedProject}
+            onCancel={() => setSelectedProjectId(null)}
+          />
         </aside>
       </div>
     </section>
