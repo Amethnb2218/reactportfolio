@@ -1,6 +1,6 @@
 import Footer from "./components/Footer.jsx";
 import HeroSection from "./components/HeroSection.jsx";
-import PortfolioIntroSection from "./components/PortfolioIntroSection.jsx";
+import Dossier from "./components/Dossier.jsx";
 import ProfileSection from "./components/ProfileSection.jsx";
 import Topbar from "./components/Topbar.jsx";
 import ExperienceSection from "./components/ExperienceSection.jsx";
@@ -18,7 +18,7 @@ export default function App() {
       <main id="contenu-principal">
         <ProfileSection />
         <ExperienceSection />
-        <PortfolioIntroSection />
+        <Dossier />
       </main>
       <Footer />
     </div>

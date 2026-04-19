@@ -669,6 +669,22 @@ main {
   color: var(--heading);
 }
 
+.link-button {
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.link-button:hover,
+.link-button:focus-visible {
+  color: var(--primary-deep);
+}
+
 .project-card img {
   width: 100%;
   aspect-ratio: 16 / 10;
