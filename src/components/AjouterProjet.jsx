@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const initialFormData = {
   libelle: "",
@@ -12,21 +12,56 @@ const initialFormData = {
   description: ""
 };
 
-export default function AjouterProjet({ onAddProject }) {
-  const [formData, setFormData] = useState(initialFormData);
+function toFormData(project) {
+  if (!project) {
+    return initialFormData;
+  }
+
+  return {
+    libelle: project.libelle ?? "",
+    image: project.image ?? "",
+    categorie: project.categorie ?? "",
+    periode: project.periode ?? "",
+    statut: project.statut ?? "",
+    role: project.role ?? "",
+    lien: project.lien ?? "",
+    technologies: Array.isArray(project.technologies)
+      ? project.technologies.join(", ")
+      : project.technologies ?? "",
+    description: project.description ?? ""
+  };
+}
+
+export default function AjouterProjet({
+  onAddProject,
+  onUpdateProject,
+  projectToEdit = null,
+  onCancelEdit
+}) {
+  const isEditing = Boolean(projectToEdit);
+  const [formData, setFormData] = useState(toFormData(projectToEdit));
   const [feedback, setFeedback] = useState(
     "Ajoutez une nouvelle realisation a votre portfolio."
   );
+
+  useEffect(() => {
+    setFormData(toFormData(projectToEdit));
+    setFeedback(
+      isEditing
+        ? "Modifiez les informations puis enregistrez la mise a jour."
+        : "Ajoutez une nouvelle realisation a votre portfolio."
+    );
+  }, [isEditing, projectToEdit]);
 
   function handleChange(event) {
     const { name, value } = event.target;
     setFormData((currentData) => ({ ...currentData, [name]: value }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
-    const newProject = {
+    const projectPayload = {
       ...formData,
       technologies: formData.technologies
         .split(",")
@@ -38,19 +73,29 @@ export default function AjouterProjet({ onAddProject }) {
       lien: formData.lien.trim()
     };
 
-    onAddProject(newProject);
+    if (isEditing) {
+      await onUpdateProject({
+        ...projectPayload,
+        id: projectToEdit.id
+      });
+      setFeedback("Le projet a ete mis a jour.");
+      return;
+    }
+
+    await onAddProject(projectPayload);
     setFormData(initialFormData);
     setFeedback("Le projet a ete ajoute au portfolio.");
   }
 
   return (
-    <form className="panel project-form" onSubmit={handleSubmit}>
+    <form className="panel project-form" id="formulaire-projet" onSubmit={handleSubmit}>
       <div className="panel-title-row">
         <div>
-          <h3>AjouterProjet</h3>
+          <h3>{isEditing ? "Editer le projet" : "AjouterProjet"}</h3>
           <p className="muted">
-            Remplissez les champs essentiels pour creer une nouvelle carte
-            projet.
+            {isEditing
+              ? "Mettez a jour les champs du projet selectionne."
+              : "Remplissez les champs essentiels pour creer une nouvelle carte projet."}
           </p>
         </div>
       </div>
@@ -165,8 +210,13 @@ export default function AjouterProjet({ onAddProject }) {
 
       <div className="form-actions">
         <button className="button button-primary" type="submit">
-          Enregistrer le projet
+          {isEditing ? "Enregistrer les modifications" : "Enregistrer le projet"}
         </button>
+        {isEditing ? (
+          <button className="button button-ghost" type="button" onClick={onCancelEdit}>
+            Annuler l edition
+          </button>
+        ) : null}
         <p className="form-hint">{feedback}</p>
       </div>
     </form>

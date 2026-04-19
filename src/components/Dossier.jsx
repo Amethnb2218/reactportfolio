@@ -7,7 +7,8 @@ import RechercheProjet from "./RechercheProjet.jsx";
 import {
   createProject,
   deleteProject,
-  fetchProjects
+  fetchProjects,
+  updateProject
 } from "../services/projectsApi.js";
 
 function getNextProjectId(projects) {
@@ -22,6 +23,7 @@ export default function Dossier() {
   );
   const [status, setStatus] = useState("Chargement API");
   const [pendingDeletionId, setPendingDeletionId] = useState(null);
+  const [editingProjectId, setEditingProjectId] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -78,6 +80,8 @@ export default function Dossier() {
 
   const selectedProject =
     projects.find((project) => project.id === selectedProjectId) ?? null;
+  const editingProject =
+    projects.find((project) => project.id === editingProjectId) ?? null;
 
   function removeProjectLocally(projectId) {
     setProjects((currentProjects) => {
@@ -126,6 +130,29 @@ export default function Dossier() {
     }
   }
 
+  async function handleUpdateProject(projectData) {
+    try {
+      const savedProject = await updateProject(projectData.id, projectData);
+      setProjects((currentProjects) =>
+        currentProjects.map((project) =>
+          project.id === savedProject.id ? savedProject : project
+        )
+      );
+      setSelectedProjectId(savedProject.id);
+      setEditingProjectId(null);
+      setStatus("Projet modifie sur le serveur");
+    } catch (error) {
+      setProjects((currentProjects) =>
+        currentProjects.map((project) =>
+          project.id === projectData.id ? projectData : project
+        )
+      );
+      setSelectedProjectId(projectData.id);
+      setEditingProjectId(null);
+      setStatus("Modification locale hors ligne");
+    }
+  }
+
   return (
     <section className="section" id="portfolio">
       <div className="section-heading">
@@ -138,7 +165,12 @@ export default function Dossier() {
       </div>
 
       <div className="form-layout">
-        <AjouterProjet onAddProject={handleAddProject} />
+        <AjouterProjet
+          onAddProject={handleAddProject}
+          onUpdateProject={handleUpdateProject}
+          projectToEdit={editingProject}
+          onCancelEdit={() => setEditingProjectId(null)}
+        />
 
         <aside className="panel helper-panel">
           <h3>Rappels rapides</h3>
@@ -146,6 +178,7 @@ export default function Dossier() {
             <li>Le libelle doit etre clair et actionnable.</li>
             <li>Les technologies separentes par des virgules seront converties en tags.</li>
             <li>Le projet ajoute est automatiquement selectionne.</li>
+            <li>Le bouton Editer pre-remplit le formulaire avec le projet courant.</li>
           </ul>
         </aside>
       </div>
@@ -193,6 +226,7 @@ export default function Dossier() {
           <DetaillerProjet
             project={selectedProject}
             onCancel={() => setSelectedProjectId(null)}
+            onEdit={() => setEditingProjectId(selectedProject?.id ?? null)}
           />
         </aside>
       </div>

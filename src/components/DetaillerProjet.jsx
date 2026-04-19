@@ -1,4 +1,4 @@
-export default function DetaillerProjet({ project, onCancel }) {
+export default function DetaillerProjet({ project, onCancel, onEdit }) {
   if (!project) {
     return (
       <div className="project-detail-empty">
@@ -42,6 +42,9 @@ export default function DetaillerProjet({ project, onCancel }) {
       <div className="detail-actions">
         <button className="button button-ghost" type="button" onClick={onCancel}>
           Annuler
+        </button>
+        <button className="button button-primary" type="button" onClick={onEdit}>
+          Editer
         </button>
       </div>
     </article>
