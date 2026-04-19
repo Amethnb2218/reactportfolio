@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { initialProjects } from "../data/projects.js";
 import AjouterProjet from "./AjouterProjet.jsx";
 import Projet from "./Projet.jsx";
+import { createProject, fetchProjects } from "../services/projectsApi.js";
 
 function getNextProjectId(projects) {
   return projects.reduce((maxId, project) => Math.max(maxId, project.id), 0) + 1;
@@ -13,6 +14,39 @@ export default function Dossier() {
   const [selectedProjectId, setSelectedProjectId] = useState(
     initialProjects[0]?.id ?? null
   );
+  const [status, setStatus] = useState("Chargement API");
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProjects() {
+      try {
+        const loadedProjects = await fetchProjects();
+
+        if (!isMounted) {
+          return;
+        }
+
+        setProjects(loadedProjects);
+        setSelectedProjectId(loadedProjects[0]?.id ?? null);
+        setStatus("Connecte a json-server");
+      } catch (error) {
+        if (!isMounted) {
+          return;
+        }
+
+        setProjects(initialProjects);
+        setSelectedProjectId(initialProjects[0]?.id ?? null);
+        setStatus("Mode local");
+      }
+    }
+
+    loadProjects();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredProjects = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -52,14 +86,22 @@ export default function Dossier() {
     });
   }
 
-  function handleAddProject(projectData) {
-    const newProject = {
+  async function handleAddProject(projectData) {
+    const optimisticProject = {
       ...projectData,
       id: getNextProjectId(projects)
     };
 
-    setProjects((currentProjects) => [newProject, ...currentProjects]);
-    setSelectedProjectId(newProject.id);
+    try {
+      const createdProject = await createProject(projectData);
+      setProjects((currentProjects) => [createdProject, ...currentProjects]);
+      setSelectedProjectId(createdProject.id);
+      setStatus("Projet ajoute sur le serveur");
+    } catch (error) {
+      setProjects((currentProjects) => [optimisticProject, ...currentProjects]);
+      setSelectedProjectId(optimisticProject.id);
+      setStatus("Ajout local hors ligne");
+    }
   }
 
   return (
@@ -95,7 +137,7 @@ export default function Dossier() {
                 {projects.length} projet(s) stocke(s) dans l&apos;etat React.
               </p>
             </div>
-            <span className="status-badge">Etat local</span>
+            <span className="status-badge">{status}</span>
           </div>
 
           <div className="form-grid">
