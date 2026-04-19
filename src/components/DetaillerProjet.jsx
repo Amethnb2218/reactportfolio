@@ -12,14 +12,16 @@ export default function DetaillerProjet({ project, onCancel, onEdit }) {
       <span className="detail-chip">{project.categorie}</span>
       <h4>{project.libelle}</h4>
       <p>{project.description}</p>
-      <img
-        src={project.image}
-        alt={`Illustration du projet ${project.libelle}`}
-      />
+      {project.image ? (
+        <img
+          src={project.image}
+          alt={`Illustration du projet ${project.libelle}`}
+        />
+      ) : null}
       <dl className="detail-grid">
         <div>
           <dt>Periode</dt>
-          <dd>{project.periode}</dd>
+          <dd>{project.periode || "Non renseignee"}</dd>
         </div>
         <div>
           <dt>Statut</dt>

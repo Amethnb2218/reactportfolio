@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import portrait from "../../assets/images/mouhamed-sall.jpeg";
+import { useProjects } from "../context/ProjectsContext.jsx";
 
 export default function HeroSection() {
+  const { projects, status } = useProjects();
+  const highlightedProjects = projects.slice(0, 3);
+
   return (
     <div className="hero-grid">
       <div className="hero-copy">
@@ -31,18 +35,32 @@ export default function HeroSection() {
 
         <ul className="hero-metrics" aria-label="Points cles">
           <li>
+            <strong>{projects.length}</strong>
+            <span>projets references</span>
+          </li>
+          <li>
             <strong>SPA React</strong>
-            <span>une seule interface</span>
+            <span>navigation unifiee</span>
           </li>
           <li>
             <strong>REST API</strong>
-            <span>persistance json-server</span>
-          </li>
-          <li>
-            <strong>Portfolio</strong>
-            <span>gestion des projets</span>
+            <span>{status}</span>
           </li>
         </ul>
+
+        <div className="hero-note">
+          <p className="hero-note-title">Navigation rapide</p>
+          <div className="hero-inline-grid">
+            <Link className="hero-mini-card" to="/dossier">
+              <strong>Dossier projets</strong>
+              <span>Consulter, rechercher et supprimer les projets.</span>
+            </Link>
+            <Link className="hero-mini-card" to="/ajouter-projet">
+              <strong>AjouterProjet</strong>
+              <span>Creer une nouvelle realisation avec image et details.</span>
+            </Link>
+          </div>
+        </div>
       </div>
 
       <aside className="hero-spotlight">
@@ -66,6 +84,24 @@ export default function HeroSection() {
               <li>Consulter puis editer le detail complet d'un projet.</li>
               <li>Persister les donnees avec un serveur REST factice.</li>
             </ul>
+          </div>
+
+          <div className="spotlight-card">
+            <p className="spotlight-title">Projets a la une</p>
+            <div className="hero-feature-list">
+              {highlightedProjects.map((project) => (
+                <Link
+                  className="hero-feature-item"
+                  key={project.id}
+                  to={`/projets/${project.id}`}
+                >
+                  <strong>{project.libelle}</strong>
+                  <span>
+                    {project.categorie} · {project.statut}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </aside>

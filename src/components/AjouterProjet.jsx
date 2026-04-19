@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const initialFormData = {
   libelle: "",
   image: "",
+  imageUrl: "",
   categorie: "",
   periode: "",
   statut: "",
@@ -20,6 +21,10 @@ function toFormData(project) {
   return {
     libelle: project.libelle ?? "",
     image: project.image ?? "",
+    imageUrl:
+      typeof project.image === "string" && /^https?:\/\//i.test(project.image)
+        ? project.image
+        : "",
     categorie: project.categorie ?? "",
     periode: project.periode ?? "",
     statut: project.statut ?? "",
@@ -43,6 +48,7 @@ export default function AjouterProjet({
   const [feedback, setFeedback] = useState(
     "Ajoutez une nouvelle realisation a votre portfolio."
   );
+  const imageInputRef = useRef(null);
 
   useEffect(() => {
     setFormData(toFormData(projectToEdit));
@@ -55,7 +61,46 @@ export default function AjouterProjet({
 
   function handleChange(event) {
     const { name, value } = event.target;
+
+    if (name === "imageUrl") {
+      setFormData((currentData) => ({
+        ...currentData,
+        imageUrl: value,
+        image: value
+      }));
+      return;
+    }
+
     setFormData((currentData) => ({ ...currentData, [name]: value }));
+  }
+
+  function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result ?? ""));
+      reader.onerror = () => reject(new Error("Impossible de lire ce fichier."));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleImageFileChange(event) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      const imageDataUrl = await readFileAsDataUrl(file);
+      setFormData((currentData) => ({
+        ...currentData,
+        image: imageDataUrl,
+        imageUrl: ""
+      }));
+      setFeedback(`Image selectionnee depuis l'appareil : ${file.name}`);
+    } catch (error) {
+      setFeedback("Impossible de charger cette image depuis l'appareil.");
+    }
   }
 
   async function handleSubmit(event) {
@@ -67,11 +112,12 @@ export default function AjouterProjet({
         .split(",")
         .map((technology) => technology.trim())
         .filter(Boolean),
-      image:
-        formData.image ||
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1400&q=80",
+      image: formData.image.trim(),
+      periode: formData.periode.trim(),
       lien: formData.lien.trim()
     };
+
+    delete projectPayload.imageUrl;
 
     if (isEditing) {
       await onUpdateProject({
@@ -84,6 +130,9 @@ export default function AjouterProjet({
 
     await onAddProject(projectPayload);
     setFormData(initialFormData);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
+    }
     setFeedback("Le projet a ete ajoute au portfolio.");
   }
 
@@ -115,13 +164,23 @@ export default function AjouterProjet({
         </label>
 
         <label>
-          <span>Image</span>
+          <span>Image par URL</span>
           <input
-            name="image"
+            name="imageUrl"
             type="url"
-            value={formData.image}
+            value={formData.imageUrl}
             onChange={handleChange}
-            placeholder="https://..."
+            placeholder="https://... (optionnel)"
+          />
+        </label>
+
+        <label>
+          <span>Image depuis l'appareil</span>
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageFileChange}
           />
         </label>
 
@@ -142,10 +201,9 @@ export default function AjouterProjet({
           <input
             name="periode"
             type="text"
-            required
             value={formData.periode}
             onChange={handleChange}
-            placeholder="2026"
+            placeholder="2026 (optionnel)"
           />
         </label>
 
@@ -207,6 +265,13 @@ export default function AjouterProjet({
           />
         </label>
       </div>
+
+      {formData.image ? (
+        <div className="form-image-preview">
+          <span>Apercu de l'image</span>
+          <img src={formData.image} alt="Apercu du projet a enregistrer" />
+        </div>
+      ) : null}
 
       <div className="form-actions">
         <button className="button button-primary" type="submit">

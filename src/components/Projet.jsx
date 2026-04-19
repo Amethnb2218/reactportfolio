@@ -2,23 +2,34 @@ import { Link } from "react-router-dom";
 
 export default function Projet({ project, onDelete, isBusy = false }) {
   const detailPath = `/projets/${project.id}`;
+  const shortDescription = project.description?.trim() || "Description non renseignee.";
 
   return (
     <article className="project-card">
-      <span className="project-card-category">{project.categorie}</span>
+      <div className="project-card-head">
+        <span className="project-card-category">{project.categorie}</span>
+        <span className="project-card-status">{project.statut}</span>
+      </div>
       <h4>
         <Link className="project-title-link" to={detailPath}>
           {project.libelle}
         </Link>
       </h4>
-      <img
-        src={project.image}
-        alt={`Illustration du projet ${project.libelle}`}
-      />
-      <p>{project.description}</p>
+      {project.image ? (
+        <img
+          src={project.image}
+          alt={`Illustration du projet ${project.libelle}`}
+        />
+      ) : null}
+      <p>{shortDescription}</p>
       <div className="project-card-meta">
-        <span>{project.statut}</span>
-        <span>{project.periode}</span>
+        <span>{project.periode || "Periode non renseignee"}</span>
+        <span>{project.role || "Role non renseigne"}</span>
+      </div>
+      <div className="project-card-tech">
+        {(project.technologies ?? []).slice(0, 3).map((technology) => (
+          <span key={technology}>{technology}</span>
+        ))}
       </div>
       <div className="card-actions">
         <Link className="detail-link" to={detailPath}>
