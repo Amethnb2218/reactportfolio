@@ -1,16 +1,15 @@
-export default function Projet({ project, onDelete, onSelect, isBusy = false }) {
-  function handleSelect(event) {
-    event.preventDefault();
-    onSelect(project.id);
-  }
+import { Link } from "react-router-dom";
+
+export default function Projet({ project, onDelete, isBusy = false }) {
+  const detailPath = `/projets/${project.id}`;
 
   return (
     <article className="project-card">
       <span className="project-card-category">{project.categorie}</span>
       <h4>
-        <a className="project-title-link" href="#detail-projet" onClick={handleSelect}>
+        <Link className="project-title-link" to={detailPath}>
           {project.libelle}
-        </a>
+        </Link>
       </h4>
       <img
         src={project.image}
@@ -22,9 +21,9 @@ export default function Projet({ project, onDelete, onSelect, isBusy = false }) 
         <span>{project.periode}</span>
       </div>
       <div className="card-actions">
-        <button className="detail-button" type="button" onClick={handleSelect}>
+        <Link className="detail-link" to={detailPath}>
           Voir le detail
-        </button>
+        </Link>
         <button
           className="delete-button"
           type="button"

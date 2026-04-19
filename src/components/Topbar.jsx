@@ -1,28 +1,29 @@
+import { NavLink } from "react-router-dom";
+
 const links = [
-  { href: "#accueil", label: "Accueil", current: true },
-  { href: "#profil", label: "Profil" },
-  { href: "#parcours", label: "Parcours" },
-  { href: "#portfolio", label: "Portfolio" }
+  { to: "/", label: "Accueil" },
+  { to: "/dossier", label: "Dossier projets" },
+  { to: "/ajouter-projet", label: "AjouterProjet" }
 ];
 
 export default function Topbar() {
   return (
     <nav className="topbar" aria-label="Navigation principale">
       <div className="topbar-head">
-        <a className="brand" href="#accueil">
+        <NavLink className="brand" to="/">
           MS
-        </a>
+        </NavLink>
       </div>
 
       <div className="topbar-links">
         {links.map((link) => (
-          <a
-            key={link.href}
-            className={link.current ? "nav-current" : undefined}
-            href={link.href}
+          <NavLink
+            key={link.to}
+            className={({ isActive }) => (isActive ? "nav-current" : undefined)}
+            to={link.to}
           >
             {link.label}
-          </a>
+          </NavLink>
         ))}
       </div>
     </nav>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import portrait from "../../assets/images/mouhamed-sall.jpeg";
 
 export default function HeroSection() {
@@ -15,9 +16,9 @@ export default function HeroSection() {
         </p>
 
         <div className="hero-actions">
-          <a className="button button-primary" href="#portfolio">
+          <Link className="button button-primary" to="/dossier">
             Gerer les projets
-          </a>
+          </Link>
           <a
             className="button button-ghost"
             href="https://jolofera.com"
