@@ -669,19 +669,13 @@ main {
   color: var(--heading);
 }
 
-.link-button {
-  padding: 0;
-  border: none;
-  background: transparent;
+.project-title-link {
   color: inherit;
-  font: inherit;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
+  text-decoration: none;
 }
 
-.link-button:hover,
-.link-button:focus-visible {
+.project-title-link:hover,
+.project-title-link:focus-visible {
   color: var(--primary-deep);
 }
 

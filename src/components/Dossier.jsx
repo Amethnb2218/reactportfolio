@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { initialProjects } from "../data/projects.js";
+import Projet from "./Projet.jsx";
 
 function getNextProjectId(projects) {
   return projects.reduce((maxId, project) => Math.max(maxId, project.id), 0) + 1;
@@ -118,45 +119,12 @@ export default function Dossier() {
           <div className="project-flex" aria-live="polite">
             {filteredProjects.length > 0 ? (
               filteredProjects.map((project) => (
-                <article className="project-card" key={project.id}>
-                  <span className="project-card-category">
-                    {project.categorie}
-                  </span>
-                  <h4>
-                    <button
-                      className="link-button"
-                      type="button"
-                      onClick={() => setSelectedProjectId(project.id)}
-                    >
-                      {project.libelle}
-                    </button>
-                  </h4>
-                  <img
-                    src={project.image}
-                    alt={`Illustration du projet ${project.libelle}`}
-                  />
-                  <p>{project.description}</p>
-                  <div className="project-card-meta">
-                    <span>{project.statut}</span>
-                    <span>{project.periode}</span>
-                  </div>
-                  <div className="card-actions">
-                    <button
-                      className="detail-button"
-                      type="button"
-                      onClick={() => setSelectedProjectId(project.id)}
-                    >
-                      Voir le detail
-                    </button>
-                    <button
-                      className="delete-button"
-                      type="button"
-                      onClick={() => handleDeleteProject(project.id)}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </article>
+                <Projet
+                  key={project.id}
+                  project={project}
+                  onDelete={handleDeleteProject}
+                  onSelect={setSelectedProjectId}
+                />
               ))
             ) : (
               <div className="project-detail-empty">
