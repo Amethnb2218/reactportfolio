@@ -30,7 +30,16 @@ async function apiRequest(url, options = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`Erreur API (${response.status})`);
+    let message = `Erreur API (${response.status})`;
+
+    try {
+      const payload = await response.json();
+      message = payload.error || payload.message || message;
+    } catch (error) {
+      message = response.statusText || message;
+    }
+
+    throw new Error(message);
   }
 
   if (response.status === 204) {

@@ -114,26 +114,31 @@ export default function AjouterProjet({
         .filter(Boolean),
       image: formData.image.trim(),
       periode: formData.periode.trim(),
-      lien: formData.lien.trim()
+      lien: formData.lien.trim(),
+      description: formData.description.trim()
     };
 
     delete projectPayload.imageUrl;
 
-    if (isEditing) {
-      await onUpdateProject({
-        ...projectPayload,
-        id: projectToEdit.id
-      });
-      setFeedback("Le projet a ete mis a jour.");
-      return;
-    }
+    try {
+      if (isEditing) {
+        await onUpdateProject({
+          ...projectPayload,
+          id: projectToEdit.id
+        });
+        setFeedback("Le projet a ete mis a jour sur le serveur.");
+        return;
+      }
 
-    await onAddProject(projectPayload);
-    setFormData(initialFormData);
-    if (imageInputRef.current) {
-      imageInputRef.current.value = "";
+      await onAddProject(projectPayload);
+      setFormData(initialFormData);
+      if (imageInputRef.current) {
+        imageInputRef.current.value = "";
+      }
+      setFeedback("Le projet a ete ajoute sur le serveur.");
+    } catch (error) {
+      setFeedback(`Enregistrement impossible : ${error.message}`);
     }
-    setFeedback("Le projet a ete ajoute au portfolio.");
   }
 
   return (
@@ -259,6 +264,7 @@ export default function AjouterProjet({
           <textarea
             name="description"
             rows="5"
+            required
             value={formData.description}
             onChange={handleChange}
             placeholder="Description libre du projet"

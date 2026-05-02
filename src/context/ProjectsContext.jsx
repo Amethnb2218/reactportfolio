@@ -9,18 +9,6 @@ import {
 
 const ProjectsContext = createContext(null);
 
-function getNextProjectId(projects) {
-  const numericIds = projects
-    .map((project) => Number(project.id))
-    .filter(Number.isFinite);
-
-  if (numericIds.length === 0) {
-    return `local-${Date.now()}`;
-  }
-
-  return Math.max(...numericIds) + 1;
-}
-
 export function ProjectsProvider({ children }) {
   const [projects, setProjects] = useState(initialProjects);
   const [status, setStatus] = useState("Chargement API");
@@ -57,20 +45,14 @@ export function ProjectsProvider({ children }) {
   }, []);
 
   async function addProject(projectData) {
-    const optimisticProject = {
-      ...projectData,
-      id: getNextProjectId(projects)
-    };
-
     try {
       const createdProject = await createProject(projectData);
       setProjects((currentProjects) => [createdProject, ...currentProjects]);
       setStatus("Projet ajoute sur le serveur");
       return createdProject;
     } catch (error) {
-      setProjects((currentProjects) => [optimisticProject, ...currentProjects]);
-      setStatus("Ajout local hors ligne");
-      return optimisticProject;
+      setStatus(`Ajout refuse par l'API : ${error.message}`);
+      throw error;
     }
   }
 
@@ -85,13 +67,8 @@ export function ProjectsProvider({ children }) {
       setStatus("Projet modifie sur le serveur");
       return savedProject;
     } catch (error) {
-      setProjects((currentProjects) =>
-        currentProjects.map((project) =>
-          project.id === projectData.id ? projectData : project
-        )
-      );
-      setStatus("Modification locale hors ligne");
-      return projectData;
+      setStatus(`Modification refusee par l'API : ${error.message}`);
+      throw error;
     }
   }
 
@@ -105,10 +82,7 @@ export function ProjectsProvider({ children }) {
       );
       setStatus("Projet supprime sur le serveur");
     } catch (error) {
-      setProjects((currentProjects) =>
-        currentProjects.filter((project) => project.id !== projectId)
-      );
-      setStatus("Suppression locale hors ligne");
+      setStatus(`Suppression refusee par l'API : ${error.message}`);
     } finally {
       setPendingDeletionId(null);
     }
