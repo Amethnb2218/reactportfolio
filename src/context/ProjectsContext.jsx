@@ -10,7 +10,15 @@ import {
 const ProjectsContext = createContext(null);
 
 function getNextProjectId(projects) {
-  return projects.reduce((maxId, project) => Math.max(maxId, project.id), 0) + 1;
+  const numericIds = projects
+    .map((project) => Number(project.id))
+    .filter(Number.isFinite);
+
+  if (numericIds.length === 0) {
+    return `local-${Date.now()}`;
+  }
+
+  return Math.max(...numericIds) + 1;
 }
 
 export function ProjectsProvider({ children }) {
@@ -30,7 +38,7 @@ export function ProjectsProvider({ children }) {
         }
 
         setProjects(loadedProjects);
-        setStatus("Connecte a json-server");
+        setStatus("Connecte a Express API");
       } catch (error) {
         if (!isMounted) {
           return;

@@ -1,4 +1,25 @@
-const API_URL = "/api/projets";
+const API_URL = "/api/projects";
+
+function normalizeProject(project) {
+  if (!project) {
+    return project;
+  }
+
+  return {
+    ...project,
+    id: project.id ?? project._id
+  };
+}
+
+function normalizeApiResponse(payload) {
+  const data = payload?.data ?? payload;
+
+  if (Array.isArray(data)) {
+    return data.map(normalizeProject);
+  }
+
+  return normalizeProject(data);
+}
 
 async function apiRequest(url, options = {}) {
   const response = await fetch(url, {
@@ -16,7 +37,9 @@ async function apiRequest(url, options = {}) {
     return null;
   }
 
-  return response.json();
+  const payload = await response.json();
+
+  return normalizeApiResponse(payload);
 }
 
 export function fetchProjects() {

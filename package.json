@@ -2,17 +2,13 @@
   "name": "mouhamed-sall-portfolio-spa",
   "version": "1.0.0",
   "private": true,
-  "description": "SPA portfolio en React avec json-server",
+  "description": "SPA portfolio en React connectee a une API Express et MongoDB",
   "scripts": {
     "start": "vite",
     "dev": "vite",
-    "server": "json-server --watch db.json --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "check": "vite build"
-  },
-  "devDependencies": {
-    "json-server": "^1.0.0-beta.3"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^6.0.1",
